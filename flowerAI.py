@@ -1,8 +1,8 @@
 import turtle
 import random
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+import nltk # type: ignore
+from nltk.tokenize import word_tokenize # type: ignore
+from nltk.corpus import stopwords # type: ignore
 import re
 import math
 
@@ -19,11 +19,14 @@ def parse_user_input(user_input):
     if numbers_in_input:
         number = int(numbers_in_input[0])
 
-    flower_types = ['rose', 'tulip', 'daisy', 'sunflower', 'lily']
+    flower_types = ['rose', 'dandelion', 'daisy', 'sunflower', 'lily']
     flower_type = None
     for word in filtered_words:
         if word in flower_types:
             flower_type = word
+            break
+        elif word.endswith('s') and word[:-1] in flower_types:
+            flower_type = word[:-1]
             break
 
     if number is None:
@@ -64,103 +67,133 @@ def draw_rose():
     turtle.pendown()
 
 
-def draw_tulip():
-    turtle.color("pink")
+def draw_dandelion():
+    turtle.color("gray")
     turtle.begin_fill()
-    
-    
-    turtle.penup()
-    turtle.goto(0, 0)  
-    turtle.pendown()
-    turtle.setheading(0)  
-    
-   
-    turtle.circle(40, 180)
-    
-    
-    turtle.setheading(-90)  
-    turtle.forward(80)    
-    turtle.setheading(180) 
-    turtle.circle(-40, 180) 
-    turtle.setheading(90)  
-    turtle.forward(80)     
-    
+    turtle.circle(50)  
     turtle.end_fill()
-    
+
+    # Reset position
+    turtle.right(90)
+    turtle.penup()
+    turtle.forward(0) 
+    turtle.pendown()
+
     turtle.color('green')
     turtle.pensize(5)
-    turtle.penup()
-    turtle.goto(0, -80)  
-    turtle.setheading(-90)  
-    turtle.pendown()
-    turtle.forward(100)  
-    
-    
+    turtle.forward(150)
+
     turtle.pensize(1)
     turtle.penup()
-    turtle.goto(0, 0)  
-    turtle.setheading(0)  
-    turtle.pendhown()
+    turtle.backward(210)  
+    turtle.left(90)  
+    turtle.pendown()
 
+    
 
 
 def draw_daisy():
-    turtle.color("yellow")
+    turtle.color('red')
     turtle.begin_fill()
-    for _ in range(8):
-        turtle.forward(40)
-        turtle.left(45)
+
+    for _ in range(6):  
+        turtle.circle(50, 60)  
+        turtle.left(120)
+        turtle.circle(50, 60)
+        turtle.left(60)
+
     turtle.end_fill()
 
-
-def draw_sunflower():
-    turtle.color("orange")
-    turtle.begin_fill()
-    for _ in range(12):
-        turtle.forward(60)
-        turtle.left(30)
-    turtle.end_fill()
-
-
-def draw_lily():
-    turtle.color("purple")
-    turtle.begin_fill()
     
-    
-    for _ in range(6):
-        turtle.forward(60)  
-        turtle.right(120)
-        turtle.forward(60) 
-        turtle.left(60)  
-
-    turtle.end_fill()
+    turtle.right(90)
+    turtle.penup()
+    turtle.forward(60) 
+    turtle.pendown()
 
     turtle.color('green')
     turtle.pensize(5)
-    turtle.penup()
-    turtle.goto(0, -60)  
-    turtle.setheading(-90)  
-    turtle.pendown()
-    turtle.forward(100)  
+    turtle.forward(150)
 
+    
     turtle.pensize(1)
     turtle.penup()
-    turtle.goto(0, 0) 
-    turtle.setheading(0)  
+    turtle.backward(210)  
+    turtle.left(90)  
     turtle.pendown()
 
+
+def draw_sunflower():
+    turtle.color('yellow')
+    turtle.begin_fill()
+
+    for _ in range(6):  
+        turtle.circle(50, 60)  
+        turtle.left(120)
+        turtle.circle(50, 60)
+        turtle.left(60)
+
+    turtle.end_fill()
+
+    
+    turtle.right(90)
+    turtle.penup()
+    turtle.forward(60) 
+    turtle.pendown()
+
+    turtle.color('green')
+    turtle.pensize(5)
+    turtle.forward(150)
+
+    
+    turtle.pensize(1)
+    turtle.penup()
+    turtle.backward(210)  
+    turtle.left(90)  
+    turtle.pendown()
+
+
+def draw_lily():
+    turtle.color('purple')
+    turtle.begin_fill()
+
+    for _ in range(6):  
+        turtle.circle(50, 60)  
+        turtle.left(120)
+        turtle.circle(50, 60)
+        turtle.left(60)
+
+    turtle.end_fill()
+
+    
+    turtle.right(90)
+    turtle.penup()
+    turtle.forward(60) 
+    turtle.pendown()
+
+    turtle.color('green')
+    turtle.pensize(5)
+    turtle.forward(150)
+
+    
+    turtle.pensize(1)
+    turtle.penup()
+    turtle.backward(210)  
+    turtle.left(90)  
+    turtle.pendown()
+
+    
 def draw_flowers(flower_type, count):
     turtle.speed(0)
     angle = 360 / count
-    radius = 200  
+    radius = 200
 
     draw_function = {
         'rose': draw_rose,
-        'tulip': draw_tulip,
+        'dandelion': draw_dandelion,
         'daisy': draw_daisy,
         'sunflower': draw_sunflower,
         'lily': draw_lily
-    }.get(flower_type, draw_rose)  
+    }.get(flower_type, draw_rose)
 
     for i in range(count):
         turtle.penup()
@@ -168,15 +201,16 @@ def draw_flowers(flower_type, count):
         y = radius * math.sin(math.radians(angle * i))
         turtle.goto(x, y)
         turtle.pendown()
-        draw_function() 
-        turtle.penup()  
-        turtle.goto(x, y) 
+        draw_function()
+        turtle.penup()
+        turtle.goto(x, y)
 
     turtle.done()
 
 if __name__ == "__main__":
-    user_input = input("Please specify the number and type of flowers (e.g., 'Draw 5 roses'): ")
-
+    user_input = input("Please choose your favorite flower and quantity (ex: make me 5 awesome dandelions): ")
     count, flower_type = parse_user_input(user_input)
-
-    draw_flowers(flower_type, count)
+    if flower_type not in ['rose', 'dandelion', 'daisy', 'sunflower', 'lily']:
+        print(f"Invalid flower type '{flower_type}'. Please try again.")
+    else:
+        draw_flowers(flower_type, count)
