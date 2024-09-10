@@ -8,6 +8,7 @@ def parse_user_input(user_input):
     filtered_words = [word for word in tokens if word.isalpha()]
 
     number = None
+    #GPT Ideation next 3 line's, My interpretation on it, it seperates characters from those with numbers
     numbers_in_input = re.findall(r'\d+', user_input)
     if numbers_in_input:
         number = int(numbers_in_input[0])
